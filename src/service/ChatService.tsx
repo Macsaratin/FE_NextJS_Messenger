@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import { getToken, getUserId } from '@/service/auth';
-
+import auth from "@/service/auth";
 const apiUrl = 'http://localhost:3000/api';
 let socket: Socket | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let messageCallbacks: ((message: any) => void)[] = [];
 
 export function connectSocket() {
-  const token = getToken();
+  const token = auth.getToken();
   if (!token) {
     console.error('No token available for socket connection');
     return;
@@ -23,7 +23,7 @@ export function connectSocket() {
 
   socket.on('connect', () => {
     console.log('Socket connected', socket?.id);
-    const userId = getUserId();
+    const userId = auth.getUserId();
     if (userId) socket?.emit('join', { userId });
   });
 
@@ -37,6 +37,7 @@ export function getSocket(): Socket | null {
   return socket;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function notifyCallbacks(message: any) {
   messageCallbacks.forEach((cb) => {
     try {
@@ -47,17 +48,19 @@ function notifyCallbacks(message: any) {
   });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function listenForMessages(callback: (msg: any) => void) {
   messageCallbacks.push(callback);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function removeMessageListener(callback: (msg: any) => void) {
   messageCallbacks = messageCallbacks.filter((cb) => cb !== callback);
 }
 
 export async function sendMessage(recipientId: string, content: string, conversationId?: string) {
-  const token = getToken();
-  const senderId = getUserId();
+  const token = auth.getToken();
+  const senderId = auth.getUserId();
 
   if (!token || !senderId || !recipientId || !content.trim()) {
     return Promise.reject('Invalid data');
@@ -89,8 +92,8 @@ export async function sendMessage(recipientId: string, content: string, conversa
 }
 
 export async function sendFileMessage(conversationId: string, file: File, recipientId?: string) {
-  const token = getToken();
-  const senderId = getUserId();
+  const token = auth.getToken();
+  const senderId = auth.getUserId();
   if (!token || !senderId) return Promise.reject('Not authenticated');
 
   const formData = new FormData();
@@ -124,7 +127,7 @@ export async function sendFileMessage(conversationId: string, file: File, recipi
 }
 
 export async function getMessages(friendId: string) {
-  const token = getToken();
+  const token = auth.getToken();
   const res = await axios.get(`${apiUrl}/mess/${friendId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -132,7 +135,7 @@ export async function getMessages(friendId: string) {
 }
 
 export async function getGroupChat(id: string) {
-  const token = getToken();
+  const token = auth.getToken();
   const res = await axios.get(`${apiUrl}/groupchat/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -140,13 +143,14 @@ export async function getGroupChat(id: string) {
 }
 
 export async function getGroupChats() {
-  const token = getToken();
+  const token = auth.getToken();
   const res = await axios.get(`${apiUrl}/groupchat`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function emitWithRetry(event: string, data: any, attempts = 3): Promise<void> {
   return new Promise((resolve, reject) => {
     const tryEmit = (retry: number) => {
@@ -158,6 +162,7 @@ async function emitWithRetry(event: string, data: any, attempts = 3): Promise<vo
         }
         return;
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       socket.emit(event, data, (ack: any) => {
         if (ack?.error) {
           if (retry > 0) {

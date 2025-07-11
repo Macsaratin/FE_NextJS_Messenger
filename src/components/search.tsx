@@ -13,6 +13,7 @@ export default function SearchUserComponent() {
   const { message, showMessage } = useNotification();
 
   const handleSearch = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: any = {};
 
     if (searchType === 'fullname' && inputFullname.trim()) {
@@ -43,6 +44,7 @@ export default function SearchUserComponent() {
         <label className="block mb-1 text-sm font-medium text-gray-700">Chọn kiểu tìm kiếm:</label>
         <select
           value={searchType}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onChange={(e) => setSearchType(e.target.value as any)}
           className="w-full border px-3 py-2 rounded"
         >

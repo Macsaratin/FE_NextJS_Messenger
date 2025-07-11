@@ -14,17 +14,16 @@ export default function FriendPage() {
     receivedRequests,
     sentRequests,
     loading: loadingRequests,
-    error: errorRequests,
     acceptRequest,
     rejectRequest,
     actionMessage,
-    setActionMessage,
     refresh,
   } = useFriendRequests();
 
   const [keyword, setKeyword] = useState('');
   const [searchField, setSearchField] = useState<'fullname' | 'email' | 'number'>('fullname');
   const [message, setMessage] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -50,6 +49,7 @@ export default function FriendPage() {
       await friendService.sendFriendRequest(toUserId);
       setMessage('Đã gửi lời mời kết bạn.');
       await refresh();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setMessage(err?.response?.data?.message || 'Lỗi khi gửi lời mời.');
     }
@@ -60,6 +60,7 @@ export default function FriendPage() {
       await friendService.rejectFriendRequest(toUserId);
       setMessage('Đã huỷ lời mời.');
       await refresh();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setMessage(err?.response?.data?.message || 'Lỗi khi huỷ lời mời.');
     }

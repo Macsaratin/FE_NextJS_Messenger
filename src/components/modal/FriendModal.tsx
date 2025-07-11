@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import friendService from '@/service/FriendsService';
-import Cookies from 'js-cookie';
 
 interface Friend {
   _id: string;
@@ -26,6 +25,7 @@ export default function FriendModal({ isOpen, onClose }: FriendModalProps) {
     try {
       const data = await friendService.getFriendList();
       setFriends(data.friends || []);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
       setMessage('Không thể tải danh sách bạn bè.');
@@ -39,22 +39,23 @@ export default function FriendModal({ isOpen, onClose }: FriendModalProps) {
       const res = await friendService.sendFriendRequest(email);
       setMessage(res.message || 'Đã gửi lời mời kết bạn.');
       setEmail('');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setMessage(err.response?.data?.message || 'Lỗi khi gửi lời mời.');
     }
   };
 
-  const handleUnfriend = async (friendId: string) => {
-    if (!confirm('Bạn có chắc muốn hủy kết bạn?')) return;
+  // const handleUnfriend = async (friendId: string) => {
+  //   if (!confirm('Bạn có chắc muốn hủy kết bạn?')) return;
 
-    try {
-      await friendService.unfriend(friendId);
-      setFriends((prev) => prev.filter((f) => f._id !== friendId));
-      setMessage('Đã hủy kết bạn.');
-    } catch (err: any) {
-      setMessage(err.response?.data?.message || 'Lỗi khi hủy kết bạn.');
-    }
-  };
+  //   try {
+  //     await friendService.unfriend(friendId);
+  //     setFriends((prev) => prev.filter((f) => f._id !== friendId));
+  //     setMessage('Đã hủy kết bạn.');
+  //   } catch (err: any) {
+  //     setMessage(err.response?.data?.message || 'Lỗi khi hủy kết bạn.');
+  //   }
+  // };
 
   useEffect(() => {
     if (isOpen) {
@@ -100,7 +101,7 @@ export default function FriendModal({ isOpen, onClose }: FriendModalProps) {
                   <p className="text-sm text-gray-600">{friend.email}</p>
                 </div>
                 <button
-                  onClick={() => handleUnfriend(friend._id)}
+                  // onClick={() => handleUnfriend(friend._id)}
                   className="text-red-500 text-sm hover:underline"
                 >
                   Hủy kết bạn

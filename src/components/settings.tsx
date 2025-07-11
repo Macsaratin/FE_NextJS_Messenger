@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import userService from '@/service/UsersService';
 
 export default function SettingsComponent() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function SettingsComponent() {
     }
 
     fetchUser();
-  }, []);
+  }, [router]);
 
   const fetchUser = async () => {
     try {

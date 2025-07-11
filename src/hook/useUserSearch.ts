@@ -31,6 +31,7 @@ export default function useUserSearch() {
 
       const res = await axiosInstance.get(`/search?${params.toString()}`);
       setResults(res.data.users || []);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || 'Lỗi không xác định khi tìm kiếm.');
       setResults([]);

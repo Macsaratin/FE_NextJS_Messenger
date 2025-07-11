@@ -19,6 +19,7 @@ const userService = {
     return res.data;
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateUserById: async (id: string, updateData: any) => {
     const res = await axiosInstance.put(`/users/${id}`, updateData);
     return res.data;

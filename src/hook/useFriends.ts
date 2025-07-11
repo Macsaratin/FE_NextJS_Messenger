@@ -5,6 +5,7 @@ import friendService from '@/service/FriendsService';
 import Cookies from 'js-cookie';
 
 export default function useFriends() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [friends, setFriends] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,6 +19,7 @@ export default function useFriends() {
 
       const data = await friendService.getFriendList();
       setFriends(data.friends || []);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error('Lỗi khi tải danh sách bạn bè:', err);
       setError(err.message || 'Lỗi không xác định');

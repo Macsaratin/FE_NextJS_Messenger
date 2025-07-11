@@ -17,6 +17,7 @@ interface Message {
 export default function useGroupChat(token: string | null, userId: string | null) {
   const socketRef = useRef<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [groupChats, setGroupChats] = useState<any[]>([]);
 
   // Connect socket

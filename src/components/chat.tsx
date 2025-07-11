@@ -11,11 +11,14 @@ let socket: Socket;
 
 export default function ChatComponent() {
   const chatBoxRef = useRef<HTMLDivElement>(null);
-  const [token, setToken] = useState<string | null>(null);
+  // const [token,setToken] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState<'chat' | 'friends'>('chat');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [chatType, setChatType] = useState<'friend' | 'group'>('friend');
 
@@ -28,8 +31,8 @@ export default function ChatComponent() {
       router.push('/login');
       return;
     }
-
-    setToken(storedToken);
+    // setToken(storedToken);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const decoded: any = jwtDecode(storedToken);
     setUser(decoded);
 
@@ -62,7 +65,7 @@ export default function ChatComponent() {
     return () => {
       socket.disconnect();
     };
-  }, [selectedChat, chatType]);
+  }, [selectedChat, chatType, router]);
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !user || !selectedChat) return;

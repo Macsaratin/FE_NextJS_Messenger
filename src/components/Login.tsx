@@ -25,6 +25,7 @@ export default function Login() {
     try {
         await authService.login({ email, password });
         router.push('/chat');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         showMessage(error.message || 'Đăng nhập thất bại');
     } finally {
