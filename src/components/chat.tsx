@@ -70,24 +70,33 @@ export default function ChatComponent() {
   const handleSendMessage = () => {
     if (!newMessage.trim() || !user || !selectedChat) return;
 
-    const msg = {
+    const baseMsg = {
       senderId: user.id,
       content: newMessage,
-      createdAt: new Date(),
-      receiverId: chatType === 'friend' ? selectedChat._id : undefined,
-      conversationId: chatType === 'group' ? selectedChat._id : undefined,
+      createdAt: new Date().toISOString(),
     };
 
     if (chatType === 'friend') {
+      const msg = {
+        ...baseMsg,
+        receiverId: selectedChat._id,
+        conversationId: selectedChat.conversationId || selectedChat._id, // fallback
+      };
       socket.emit('newMessage', msg);
+      setMessages((prev) => [...prev, { ...msg, self: true }]);
     } else {
-      socket.emit('newGroupMessage', { ...msg, chatRoomId: selectedChat._id });
+      const msg = {
+        ...baseMsg,
+        chatRoomId: selectedChat._id,
+      };
+      socket.emit('newGroupMessage', msg);
+      setMessages((prev) => [...prev, { ...msg, self: true }]);
     }
 
-    setMessages((prev) => [...prev, { ...msg, self: true }]);
     setNewMessage('');
     scrollToBottom();
   };
+
 
   const scrollToBottom = () => {
     if (chatBoxRef.current) {

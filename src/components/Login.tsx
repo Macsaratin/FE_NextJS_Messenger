@@ -76,12 +76,12 @@ export default function Login() {
         </div>
 
         <div className="mt-6 text-center text-sm text-gray-600">
-          Chưa có tài khoản?{' '}
+          Dont have Account?{' '}
           <button
             className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
             onClick={() => router.push('/register')}
           >
-            Đăng ký
+            Register
           </button>
         </div>
       </div>
